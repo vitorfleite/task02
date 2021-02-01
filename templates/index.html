@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <title>Task 02 - WebSDK</title>
+ </head>
+ <body>
+	<script src="https://static.sumsub.com/idensic/static/sns-websdk-builder.js"></script>
+	<div id="sumsub-websdk-container"></div>
+</body>
+</html>
+<script>
+    function launchWebSdk(apiUrl, flowName, accessToken, applicantEmail, applicantPhone) {
+        let snsWebSdkInstance = snsWebSdk.Builder(apiUrl, flowName)
+            .withAccessToken(
+                accessToken,
+                (newAccessTokenCallback) => {
+                    newAccessTokenCallback(accessToken)
+                }
+            )
+            .withConf({
+                lang: 'en',
+                email: applicantEmail,
+                phone: applicantPhone,
+                onMessage: (type, payload) => {
+                    console.log('WebSDK onMessage', type, payload)
+                },
+                onError: (error) => {
+                    console.error('WebSDK onError', error)
+                },
+            })
+            .build();
+        snsWebSdkInstance.launch('#sumsub-websdk-container')
+    }
+    
+        launchWebSdk('https://test-api.sumsub.com', $FLOW_NAME = 'Flow 002', $ACCESS_TOKEN = '{{ data.token }}')
+    </script>
